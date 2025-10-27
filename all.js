@@ -48,6 +48,7 @@ const ticketDescription = document.querySelector('#ticketDescription');
 const addTicketBtn = document.querySelector('.addTicket-btn');
 
 const addTicketForm = document.querySelector('.addTicket-form');
+const cantFindArea = document.querySelector('.cantFind-area');
 
 // addTicket 綁定監聽 -> 新增套票功能
 addTicketBtn.addEventListener('click',function(){
@@ -65,7 +66,7 @@ addTicketBtn.addEventListener('click',function(){
   data.push(newTicket);
   // 清空表單的輸入框
   addTicketForm.reset();
-
+  // 輸入完成並送出表單後，清空輸入框內容
   regionSearch.value = '';
   // 將新增的卡片 ，渲染到畫面中
   renderTickets(data);
@@ -87,6 +88,11 @@ regionSearch.addEventListener('change', function(){
       }
     });
     renderTickets(filterData);
+    
+    // 查無關鍵字
+    if (filterData.length === 0){
+      cantFindArea.style.display = 'block'
+    }
   }
 });
 
