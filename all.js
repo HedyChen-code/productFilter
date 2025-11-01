@@ -41,8 +41,15 @@ addTicketBtn.addEventListener('click',function(){
   // 輸入完成並送出表單後，清空輸入框內容
   regionSearch.value = '';
   // 將新增的卡片 ，渲染到畫面中
-  renderTickets(data);
+  renderTickets(data)
+  // 將新增套票後的 data，再次計算
+  countAreaNum(data)
 })
+
+// function handleRender(item){
+//   renderTickets(item);
+//   renderChart(item)
+// }
 
 
 // 監聽下拉選單 regionSearch
@@ -108,19 +115,75 @@ function renderTickets(tickets){
   searchResultText.textContent = `本次搜尋共 ${tickets.length} 筆資料`;
 }
 
+// 渲染圖表
+function renderChart(newData){
+  const chart = c3.generate({
+    bindto: '#chart',
+    data: {
+      type: 'donut',
+      columns: newData
+    },
+    size: {
+      width: 160,
+      height: 160
+    },
+    color: {
+      pattern: ['#26C0C7', '#5151D3', '#E68618']
+    },
+    donut: {
+      label: {
+        show: false
+      },
+      width: 10
+    }
+  });
+}
+
+// var chart = c3.generate({
+//     bindto: '#chart',
+//     data: {
+//       columns: [
+//         ['data1', 30, 200, 100, 400, 150, 250],
+//         ['data2', 50, 20, 10, 40, 15, 25]
+//       ]
+//     }
+// });
+
+// 將 data 整理成 c3.js 格式
+// 計算地區
+function countAreaNum(array){
+  let totalObj = {};
+  data.forEach(item => {
+    if(totalObj[item.area] === undefined) {
+      totalObj[item.area] = 1
+    }
+    else [
+      totalObj[item.area] += 1
+    ]
+  })
+  console.log(totalObj)
+  // output: {高雄: 1, 台北: 1, 台中: 1}
+  const areaAry = Object.entries(totalObj);
+  console.log(areaAry);
+  // output: [['高雄', 1], ['台北', 1], ['台中', 1]]
+  renderChart(areaAry);
+  
+};
 
 // 撈取資料並渲染畫面
-
 async function getData() {
   try {
     const response = await axios.get(url);
     data = response.data.data;
+    console.log(data);
     renderTickets(data);
+    countAreaNum(data);
   }
   catch (error) {
     console.log('發生錯誤，回傳失敗')
   }
 };
+
 
 // function getData(){
 //   axios.get(url)
