@@ -62,15 +62,21 @@ regionSearch.addEventListener('change', function(){
   else {
     let filterData = [];
     data.forEach(function(ticket){
-      if (ticket.area === regionSearch.value ){
+      if (ticket.area === regionSearch.value){
         filterData.push(ticket);
+      }
+      // 個別地區，查無關鍵字
+      else if (regionSearch.value === '花蓮') {
+        cantFindArea.style.display = 'block';
+        ticketCardArea.innerHTML = '';
       }
     });
     renderTickets(filterData);
     
     // 查無關鍵字
     if (filterData.length === 0){
-      cantFindArea.style.display = 'block'
+      cantFindArea.style.display = 'block';
+      ticketCardArea.innerHTML = '';
     }
   }
 });
@@ -109,6 +115,7 @@ function renderTickets(tickets){
         </div>
       </li>`;
   });
+
   // 將 ticketList 的內容，渲染到畫面上
   ticketCardArea.innerHTML = ticketList;
   // 同步修改 searchResultText 的總數
@@ -134,6 +141,7 @@ function renderChart(newData){
       label: {
         show: false
       },
+      title: '套票地區比重',
       width: 10
     }
   });
@@ -161,10 +169,10 @@ function countAreaNum(array){
       totalObj[item.area] += 1
     ]
   })
-  console.log(totalObj)
+  // console.log(totalObj)
   // output: {高雄: 1, 台北: 1, 台中: 1}
   const areaAry = Object.entries(totalObj);
-  console.log(areaAry);
+  // console.log(areaAry);
   // output: [['高雄', 1], ['台北', 1], ['台中', 1]]
   renderChart(areaAry);
   

@@ -480,3 +480,8 @@ body {
 .m0-auto {
   margin: 0 auto;
 }
+
+/* 修改 donut chart 文字顏色 */
+#chart text {
+  fill: #4B4B4B;
+}
